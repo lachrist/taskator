@@ -1,7 +1,7 @@
 { "name" : "taskator"
 , "dependencies": {"web-recall-toolkit":"*", "web-recall":"*"}
 , "version" : "0.0.0"
-, "files" : ["task", "topic", "main.js"]
+, "files" : ["category", "task", "main.js", "menu.js", "util.js"]
 , "main": "main.js"
 , "description" : "Task manager"
 , "keywords" : ["Task", "Manager"]
