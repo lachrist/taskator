@@ -1,0 +1,78 @@
+
+/*************/
+/* WebRecall */
+/*************/
+
+.web-recall-sorter > * {
+  border: 1px black solid;
+  min-height: 20px;
+  min-width: 200px;
+}
+
+.web-recall-sorter > * > li {
+  cursor: pointer;
+}
+
+/************/
+/* Taskator */
+/************/
+
+.taskator > * {
+  margin: 30px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.taskator input, button {
+  margin: 5px;
+}
+
+.taskator a, button {
+  cursor: pointer;
+}
+
+.taskator a {
+  color: black;
+  text-decoration: none;
+}
+
+.taskator a:hover {
+  background-color: lightgrey;
+}
+
+/********/
+/* Menu */
+/********/
+
+.taskator-menu {
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.taskator-menu > * {
+  display: block;
+}
+
+.taskator-menu input[type="file"] {
+  max-width: 75px;
+}
+
+/************/
+/* Category */
+/************/
+
+.taskator-category-shower * {
+  display: inline;
+}
+
+/********/
+/* Task */
+/********/
+
+.taskator-task-shower * {
+  display: inline;
+}
+
+.taskator-task-shower .web-recall-timer {
+  min-width: 40px;
+}

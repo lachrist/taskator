@@ -1,0 +1,11 @@
+{ "name" : "taskator"
+, "dependencies": {"web-recall-toolkit":"*", "web-recall":"*"}
+, "version" : "0.0.0"
+, "files" : ["task", "topic", "main.js"]
+, "main": "main.js"
+, "description" : "Task manager"
+, "keywords" : ["Task", "Manager"]
+, "homepage": "http://github.com/lachrist/taskator"
+, "author" : {"name":"Laurent Christophe", "email":"lachrist@vub.ac.be"}
+, "license" : "MIT"
+}
