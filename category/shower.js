@@ -7,8 +7,10 @@ module.exports = function (wr, id) {
   var div = $("<div>").html("0s");
   function update (res, old, val) {
     console.dir(res);
+    console.log(id);
     if (wr.get("task-"+res[1]+"-category") === "category-"+id+"-name") {
-      acc += val-old;
+      console.log("INNN "+val+" >> "+old);
+      acc = acc + val-(old||0);
       div.html(Util.dhms(acc));
     }
   }
