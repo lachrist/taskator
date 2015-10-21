@@ -9775,8 +9775,8 @@ module.exports = function (wr, id) {
   var timer = WebRecallToolkit.Timer(wr, "task-"+id+"-elapsed", 5)
   var div = $("<div>")
     .addClass("taskator-task-shower")
-    .append(WebRecallToolkit.Getter(wr, "task-"+id+"-name"))
     .append(timer)
+    .append(WebRecallToolkit.Getter(wr, "task-"+id+"-name"))
     .on("remove", function () {
       wr.off(oncategory);
       wr.off(oncolor);
