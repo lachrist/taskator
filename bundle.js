@@ -37,10 +37,7 @@ module.exports = function (wr, id) {
   var acc = 0;
   var div = $("<div>").html("0s");
   function update (res, old, val) {
-    console.dir(res);
-    console.log(id);
     if (wr.get("task-"+res[1]+"-category") === "category-"+id+"-name") {
-      console.log("INNN "+val+" >> "+old);
       acc = acc + val-(old||0);
       div.html(Util.dhms(acc));
     }
@@ -54,7 +51,7 @@ module.exports = function (wr, id) {
     .append(div);
 }
 
-},{"../util.js":23,"web-recall-toolkit":10}],4:[function(require,module,exports){
+},{"../util.js":24,"web-recall-toolkit":10}],4:[function(require,module,exports){
 
 var Taskator = require("./main.js");
 $(function () { $("body").append(Taskator()) });
@@ -76,7 +73,7 @@ module.exports = function () {
   return div;
 };
 
-},{"./category":1,"./menu.js":6,"./task":20}],6:[function(require,module,exports){
+},{"./category":1,"./menu.js":6,"./task":21}],6:[function(require,module,exports){
 
 var WebRecall = require("web-recall");
 var Util = require("./util.js");
@@ -117,7 +114,7 @@ module.exports = function (onload) {
           init("{}");
       }))
 }
-},{"./util.js":23,"web-recall":18}],7:[function(require,module,exports){
+},{"./util.js":24,"web-recall":19}],7:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -9381,6 +9378,7 @@ exports.Setters.Color = require("./setter/color.js");
 exports.Setters.Integer = require("./setter/integer.js");
 exports.Setters.Reference = require("./setter/reference.js");
 exports.Setters.String = require("./setter/String.js");
+exports.Setters.Text = require("./setter/Text.js");
 
 exports.Getter = require("./getter.js");
 
@@ -9390,7 +9388,7 @@ exports.Sorter = require("./sorter.js");
 
 exports.Timer = require("./timer.js");
 
-},{"./getter.js":8,"./lister.js":9,"./setter/String.js":11,"./setter/boolean.js":12,"./setter/color.js":13,"./setter/integer.js":14,"./setter/reference.js":15,"./sorter.js":16,"./timer.js":17}],11:[function(require,module,exports){
+},{"./getter.js":8,"./lister.js":9,"./setter/String.js":11,"./setter/Text.js":12,"./setter/boolean.js":13,"./setter/color.js":14,"./setter/integer.js":15,"./setter/reference.js":16,"./sorter.js":17,"./timer.js":18}],11:[function(require,module,exports){
 
 module.exports = function (wr, key) {
   var pass = wr.lock(key);
@@ -9406,9 +9404,8 @@ module.exports = function (wr, key) {
 
 module.exports = function (wr, key) {
   var pass = wr.lock(key);
-  return $("<input>")
-    .addClass("web-recall-color-setter")
-    .prop("type", "checkbox")
+  return $("<textarea>")
+    .addClass("web-recall-text-setter")
     .val(wr.get(key))
     .change(function () { pass.set($(this).val()) })
     .on("remove", pass.unlock);
@@ -9420,13 +9417,25 @@ module.exports = function (wr, key) {
   var pass = wr.lock(key);
   return $("<input>")
     .addClass("web-recall-color-setter")
+    .prop("type", "checkbox")
+    .val(wr.get(key))
+    .change(function () { pass.set($(this).val()) })
+    .on("remove", pass.unlock);
+};
+
+},{}],14:[function(require,module,exports){
+
+module.exports = function (wr, key) {
+  var pass = wr.lock(key);
+  return $("<input>")
+    .addClass("web-recall-color-setter")
     .prop("type", "color")
     .val(wr.get(key) || "#FFFFFF")
     .change(function () { pass.set($(this).val()); })
     .on("remove", pass.unlock);
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 
 module.exports = function (wr, key, min, max) {
   var pass = wr.lock(key);
@@ -9440,7 +9449,7 @@ module.exports = function (wr, key, min, max) {
     .on("remove", pass.unlock);
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 
 function identity (x) { return x };
 
@@ -9497,7 +9506,7 @@ module.exports = function (wr, key, guard, constructor) {
 
 }
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 
 module.exports = function (wr, guard, constructor) {
 
@@ -9555,7 +9564,7 @@ module.exports = function (wr, guard, constructor) {
 
 }
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 
 var dhms = [
   {value: 1*60*60*24, name: "d"},
@@ -9604,7 +9613,7 @@ module.exports = function (wr, key, step) {
   return button;
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 
 function parse (str) {
   try { return JSON.parse(str) }
@@ -9708,47 +9717,21 @@ module.exports = function (prefix, dump) {
   }
 };
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 
 var WebRecallToolkit = require("web-recall-toolkit");
 
 module.exports = function (wr, id) {
-
-  function edit () {
-    button.off("click", edit);
-    button.on("click", done);
-    button.html("Done");
-    setters.name.show();
-    setters.category.show();
-  }
-  
-  function done () {
-    button.off("click", done);
-    button.on("click", edit);
-    button.html("Edit");
-    setters.name.hide();
-    setters.category.hide();
-  }
-  
-  var button = $("<button>");
-  
-  var setters = {};
-  setters.name = WebRecallToolkit.Setters.String(wr, "task-"+id+"-name");
-  setters.category = WebRecallToolkit.Setters.Reference(wr, "task-"+id+"-category", /^category-([0-9]+)-name$/, function (res) {
-    return WebRecallToolkit.Getter(wr, res[0]);
-  });
-  
-  done();
-  
   return $("<div>")
     .addClass("taskator-task-editor")
-    .append(button)
-    .append(setters.name)
-    .append(setters.category);
-
+    .append(WebRecallToolkit.Setters.String(wr, "task-"+id+"-name"))
+    .append(WebRecallToolkit.Setters.Reference(wr, "task-"+id+"-category", /^category-([0-9]+)-name$/, function (res) {
+      return WebRecallToolkit.Getter(wr, res[0]);
+    }))
+    .append(WebRecallToolkit.Setters.Text(wr, "task-"+id+"-comment"))
 }
 
-},{"web-recall-toolkit":10}],20:[function(require,module,exports){
+},{"web-recall-toolkit":10}],21:[function(require,module,exports){
 
 var WebRecall = require("web-recall");
 var Sorter = require("./sorter.js");
@@ -9769,11 +9752,10 @@ module.exports = function (wr) {
     .append(Sorter(wr));
 }
 
-},{"./sorter.js":22,"web-recall":18}],21:[function(require,module,exports){
+},{"./sorter.js":23,"web-recall":19}],22:[function(require,module,exports){
 
 var $ = require("jquery");
 var WebRecallToolkit = require("web-recall-toolkit");
-var Editor = require("./editor.js");
 
 module.exports = function (wr, id) {
 
@@ -9790,55 +9772,50 @@ module.exports = function (wr, id) {
     wr.on(key, oncolor);
   }
 
-  function onpriority (res, old, val) {
-    if (old === null) {
-      timer.show();
-      editor.show();
-    } else if (val === null) {
-      timer.hide();
-      editor.hide();
-    }
-  }
-
   var timer = WebRecallToolkit.Timer(wr, "task-"+id+"-elapsed", 5)
-  var editor = Editor(wr, id)
   var div = $("<div>")
     .addClass("taskator-task-shower")
     .append(WebRecallToolkit.Getter(wr, "task-"+id+"-name"))
     .append(timer)
-    .append(editor)
     .on("remove", function () {
       wr.off(oncategory);
       wr.off(oncolor);
-      wr.off(onpriority)
     });
 
   wr.on("task-"+id+"-category", oncategory);
-  wr.on("task-"+id+"-priority", onpriority);
   oncategory(undefined, undefined, wr.get("task-"+id+"-category"));
-  if (wr.get("task-"+id+"-priority") === null) {
-    timer.hide();
-    editor.hide();
-  }
 
   return div;
 
 }
 
-},{"./editor.js":19,"jquery":7,"web-recall-toolkit":10}],22:[function(require,module,exports){
+},{"jquery":7,"web-recall-toolkit":10}],23:[function(require,module,exports){
 
 var Shower = require("./shower.js");
+var Editor = require("./editor.js");
 var WebRecallToolkit = require("web-recall-toolkit");
 
 module.exports = function (wr) {
-
   return WebRecallToolkit.Sorter(wr, /^task-([0-9]+)-priority$/, function (res) {
-    return Shower(wr, res[1])
+    function edit () {
+      shower.off("click", edit);
+      shower.on("click", done);
+      editor.show("blind");
+    }
+    function done () {
+      shower.off("click", done);
+      shower.on("click", edit);
+      editor.hide("blind");
+    }
+    var shower = Shower(wr, res[1]).on("click", edit);
+    var editor = Editor(wr, res[1]).hide();
+    return $("<div>")
+      .append(shower)
+      .append(editor);
   }).addClass("taskator-task-sorter");
-
 }
 
-},{"./shower.js":21,"web-recall-toolkit":10}],23:[function(require,module,exports){
+},{"./editor.js":20,"./shower.js":22,"web-recall-toolkit":10}],24:[function(require,module,exports){
 
 function pad (x) { return ((x<10) ? "0" : "") + x }
 exports.yyyymmdd = function (sep) {
